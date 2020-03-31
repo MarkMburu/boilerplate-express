@@ -3,45 +3,53 @@ var express = require('express');
 var app = express();
 
 // --> 7)  Mount the Logger middleware here
+app.use((req, res, next) => {
 
+  let string = `${req.method} ${req.path} - ${req.ip}`
+  console.log(string)
 
-// --> 11)  Mount the body-parser middleware  here
+  next();
+
+});
+
+// pp.use/()/ --> 11)  Mount the body-parser middleware  here
 
 
 /** 1) Meet the node console. */
 console.log("Hello World")
 
 /** 2) A first working Express Server */
-// app.get('/',function(req,res){
-//   res.send("Hello Express")
-// })
+app.get('/', function (req, res) {
+  res.send("Hello Express")
+})
 
 /** 3) Serve an HTML file */
-// var abspath = __dirname + views/index.html
-app.get('/',function(req,res){
-        res.sendFile(__dirname + "/views/index.html")
-        })
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + "/views/index.html")
+})
 
 /** 4) Serve static assets  */
-app.use(express.static(__dirname+'/public'))
+app.use(express.static(__dirname + '/public'))
 
 /** 5) serve JSON on a specific route */
-app.get('/json',(req,res)=>{
-  let response = "Hello Json"
-  if (process.env.MESSAGE_STYLE === "uppercase") {
-    response = response.toUpperCase()
-    // res.json({"message": response })
-  } else {
-    response
-    // res.json({"message": response })
-}
-  res.json({"message": response })
-})
+
+app.get("/json", function (req, res) {
+  res.json({ "message": "Hello json" });
+});
 
 
 /** 6) Use the .env file to configure the app */
- 
- 
+
+app.get('/json', (req, res) => {
+  if (process.env.MESSAGE_STYLE === 'uppercase') {
+    return res.json({ "message": "HELLO JSON" })
+  }
+  else {
+    return res.json({ "message": "Hello json" })
+  }
+})
+
+
 /** 7) Root-level Middleware - A logger */
 //  place it before all the routes !
 
@@ -55,7 +63,7 @@ app.get('/json',(req,res)=>{
 /** 10) Get input from client - Query parameters */
 // /name?first=<firstname>&last=<lastname>
 
-  
+
 /** 11) Get ready for POST Requests - the `body-parser` */
 // place it before all the routes !
 
@@ -70,4 +78,4 @@ app.get('/json',(req,res)=>{
 
 //---------- DO NOT EDIT BELOW THIS LINE --------------------
 
- module.exports = app;
+module.exports = app;
