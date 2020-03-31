@@ -49,13 +49,22 @@ app.get('/json', (req, res) => {
   }
 })
 
-
 /** 7) Root-level Middleware - A logger */
 //  place it before all the routes !
 
 
 /** 8) Chaining middleware. A Time server */
+const getCurrentTime = () => {
+  let date = new Date().toString()
+  return date
+}
+app.get('/now', (req, res, next) => {
+  req.time = getCurrentTime()
 
+  next()
+}, (req, res) => {
+  res.json({ "time": req.time })
+})
 
 /** 9)  Get input from client - Route parameters */
 
