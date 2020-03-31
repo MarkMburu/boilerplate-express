@@ -1,7 +1,7 @@
 
 var express = require('express');
 var app = express();
-
+var bodyParser = require('body-parser')
 // --> 7)  Mount the Logger middleware here
 app.use((req, res, next) => {
 
@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 });
 
 // pp.use/()/ --> 11)  Mount the body-parser middleware  here
-
+app.use(bodyParser.urlencoded({extended:false}))
 
 /** 1) Meet the node console. */
 console.log("Hello World")
@@ -85,6 +85,9 @@ app.get('/name',(req,res)=>{
 
 
 /** 12) Get data form POST  */
+app.post('/name',(req,res)=>{
+  res.json({'name':`${req.body.first} ${req.body.last}`})
+})
 
 
 
